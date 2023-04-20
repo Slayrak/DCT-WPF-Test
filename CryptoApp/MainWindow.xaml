@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="CryptoApp" Height="450" Width="800">
     <Grid>
-        <view:TopCurrenciesView></view:TopCurrenciesView>
+        <view:TopCurrenciesView DataContext="{Binding CurrentViewModel}"></view:TopCurrenciesView>
     </Grid>
 </Window>
