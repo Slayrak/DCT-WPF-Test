@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CryptoApp.Domain.Models
 {
-    public class Curency
+    public class Currency
     {
         public string CurrencyName { get; set; } = "";
         public string CurrencyCode { get; set; } = "";
@@ -14,7 +14,7 @@ namespace CryptoApp.Domain.Models
         public double Volume { get; set; }
         public double PriceChange { get; set; }
 
-        public List<string> AvailableMarketsNames { get; set; } = new List<string>();
+        public IList<string> AvailableMarketsNames { get; set; } = new List<string>();
 
     }
 }
