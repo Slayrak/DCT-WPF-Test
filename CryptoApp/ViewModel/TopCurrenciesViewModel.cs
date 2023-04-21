@@ -47,10 +47,17 @@ namespace CryptoApp.ViewModel
         public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
         {
             _currencyService = currencyService;
-
+            _ = GetTop10Currencies();
             SearchCommand = new SearchCommand(this);
             OpenCurrencyInfo = new NavigateCommand(navigationStore, currenciesViewModel);
             OpenCurrencyConverter = new NavigateCommand(navigationStore, convertViewModel);
+        }
+
+        private async Task<CurrencyViewModel> GetTop10Currencies()
+        {
+            await _currencyService.GetTop10Currencies();
+
+            return null;
         }
     }
 }

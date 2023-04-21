@@ -17,9 +17,16 @@ namespace CryptoApp.Application.Services
             _httpClient = new HttpClient();
         }
 
-        public Task<IList<Currency>> GetTop10Currencies() 
+        public async Task<IList<Currency>> GetTop10Currencies() 
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("https://api.coincap.io/v2/assets");
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+            }
+
+
+            return null;
         }
         public Task<IList<Currency>> GetTopNCurrenciesOnMarket(int N, string market)
         {
