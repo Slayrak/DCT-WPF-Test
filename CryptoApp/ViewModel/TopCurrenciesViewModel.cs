@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CryptoApp.Commands;
+using CryptoApp.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,6 +12,7 @@ namespace CryptoApp.ViewModel
 {
     public class TopCurrenciesViewModel : ViewModelBase
     {
+        private readonly ICurrencyService _currencyService;
         public IList<CurrencyViewModel> CurrencyViewModels { get; set; }
 
         private int _topN = 10;
@@ -37,5 +40,11 @@ namespace CryptoApp.ViewModel
         public ICommand SearchCommand { get; }
         public ICommand GetCurrencyData { get; }
         public ICommand MakeExchange { get; }
+
+        public TopCurrenciesViewModel(ICurrencyService currencyService)
+        {
+            _currencyService = currencyService;
+            SearchCommand = new SearchCommand(this);
+        }
     }
 }

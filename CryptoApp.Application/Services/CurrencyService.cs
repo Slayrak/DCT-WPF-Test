@@ -10,6 +10,13 @@ namespace CryptoApp.Application.Services
 {
     public class CurrencyService : ICurrencyService
     {
+        private readonly HttpClient _httpClient;
+
+        public CurrencyService()
+        {
+            _httpClient = new HttpClient();
+        }
+
         public Task<IList<Currency>> GetTop10Currencies() 
         {
             throw new NotImplementedException();

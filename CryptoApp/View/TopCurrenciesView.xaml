@@ -43,7 +43,8 @@
                 Grid.Column="0"
                 Name="SearchTextBox"
                 Margin="10 10 0 10"
-                Width="200px"/>
+                Width="200px"
+                Text="{Binding CurrencyName, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Button
                 Grid.Column="1"
@@ -116,7 +117,7 @@
                 Name="TopNumber"
                 Margin="0 10 10 10"
                 Width="30px"
-                Text="{Binding TopN}"/>
+                Text="{Binding TopN, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Button
                 Grid.Column="0"

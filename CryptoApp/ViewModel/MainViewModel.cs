@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CryptoApp.Domain.Interfaces;
+using CryptoApp.Stores;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +11,13 @@ namespace CryptoApp.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public ViewModelBase CurrentViewModel { get; }
+        private readonly NavigationStore _navigationStore;
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
-        public MainViewModel() 
+        public MainViewModel(NavigationStore navigationStore, IServiceProvider serviceProvider)
         {
-            CurrentViewModel = new TopCurrenciesViewModel();
+            _navigationStore = navigationStore;
+            //CurrentViewModel = new TopCurrenciesViewModel(serviceProvider.GetService<ICurrencyService>());
         }
     }
 }
