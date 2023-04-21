@@ -1,5 +1,6 @@
 ﻿using CryptoApp.Application.Services;
 using CryptoApp.Domain.Interfaces;
+using CryptoApp.Domain.Models;
 using CryptoApp.Stores;
 using CryptoApp.View;
 using CryptoApp.ViewModel;
@@ -21,7 +22,7 @@ namespace CryptoApp
     {
         private ServiceProvider serviceProvider;
         private readonly NavigationStore _navigationStore;
-
+        private Currency _currency;
         public App()
         {
             ServiceCollection services = new ServiceCollection();
@@ -29,6 +30,8 @@ namespace CryptoApp
             serviceProvider = services.BuildServiceProvider();
 
             _navigationStore = new NavigationStore();
+
+            _currency= new Currency();
         }
 
         private void ConfigureServices(ServiceCollection services)
@@ -40,7 +43,7 @@ namespace CryptoApp
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore .CurrentViewModel = new TopCurrenciesViewModel(serviceProvider.GetRequiredService<ICurrencyService>());
+            _navigationStore.CurrentViewModel = CreateTopCurrenciesViewModel();
 
             MainWindow = new MainWindow()
             {
@@ -49,6 +52,20 @@ namespace CryptoApp
             MainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private TopCurrenciesViewModel CreateTopCurrenciesViewModel()
+        {
+            return new TopCurrenciesViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), _navigationStore, CreateCurrencyViewModel, CreateConvertCurrenciesViewModel);
+        }
+        private CurrencyViewModel CreateCurrencyViewModel()
+        {
+            return new CurrencyViewModel(_currency, _navigationStore, CreateTopCurrenciesViewModel);
+        }
+
+        private ConvertCurrenciesViewModel CreateConvertCurrenciesViewModel()
+        {
+            return new ConvertCurrenciesViewModel();
         }
     }
 }

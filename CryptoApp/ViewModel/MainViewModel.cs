@@ -17,7 +17,14 @@ namespace CryptoApp.ViewModel
         public MainViewModel(NavigationStore navigationStore, IServiceProvider serviceProvider)
         {
             _navigationStore = navigationStore;
+
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             //CurrentViewModel = new TopCurrenciesViewModel(serviceProvider.GetService<ICurrencyService>());
+        }
+
+        private void OnCurrentViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
     }
 }

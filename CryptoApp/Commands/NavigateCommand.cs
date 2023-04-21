@@ -1,24 +1,28 @@
 ﻿using CryptoApp.Stores;
+using CryptoApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CryptoApp.Commands
 {
-    public class NaviagateCommand : CommandBase
+    public class NavigateCommand : CommandBase
     {
         private readonly NavigationStore _navigationStore;
+        private readonly Func<ViewModelBase> _createViewModel;
 
-        public NaviagateCommand(NavigationStore navigationStore)
+        public NavigateCommand(NavigationStore navigationStore, Func<ViewModelBase> createViewModel)
         {
             _navigationStore = navigationStore;
+            _createViewModel = createViewModel;
         }
 
         public override void Execute(object? parameter)
         {
-            throw new NotImplementedException();
+            _navigationStore.CurrentViewModel = _createViewModel();
         }
     }
 }

@@ -1,9 +1,12 @@
-﻿using CryptoApp.Domain.Models;
+﻿using CryptoApp.Commands;
+using CryptoApp.Domain.Models;
+using CryptoApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CryptoApp.ViewModel
 {
@@ -11,9 +14,11 @@ namespace CryptoApp.ViewModel
     {
         private readonly Currency _currency;
 
-        public CurrencyViewModel(Currency currency)
+        public CurrencyViewModel(Currency currency, NavigationStore navigationStore, Func<TopCurrenciesViewModel> topCurrenciesViewModel)
         {
             _currency = currency;
+
+            OpenTop10 = new NavigateCommand(navigationStore, topCurrenciesViewModel);
         }
 
         public string CurrencyName => _currency.CurrencyName;
@@ -25,5 +30,6 @@ namespace CryptoApp.ViewModel
 
         public IEnumerable<string> AvailableMarketsNames => _currency.AvailableMarketsNames;
 
+        public ICommand OpenTop10 { get; }
     }
 }

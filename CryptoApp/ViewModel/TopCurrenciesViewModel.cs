@@ -1,5 +1,6 @@
 ﻿using CryptoApp.Commands;
 using CryptoApp.Domain.Interfaces;
+using CryptoApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,11 +41,16 @@ namespace CryptoApp.ViewModel
         public ICommand SearchCommand { get; }
         public ICommand GetCurrencyData { get; }
         public ICommand MakeExchange { get; }
+        public ICommand OpenCurrencyInfo { get; }
+        public ICommand OpenCurrencyConverter { get; }
 
-        public TopCurrenciesViewModel(ICurrencyService currencyService)
+        public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
         {
             _currencyService = currencyService;
+
             SearchCommand = new SearchCommand(this);
+            OpenCurrencyInfo = new NavigateCommand(navigationStore, currenciesViewModel);
+            OpenCurrencyConverter = new NavigateCommand(navigationStore, convertViewModel);
         }
     }
 }
