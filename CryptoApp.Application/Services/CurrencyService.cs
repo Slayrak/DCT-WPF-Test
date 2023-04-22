@@ -1,5 +1,6 @@
 ﻿using CryptoApp.Domain.Interfaces;
 using CryptoApp.Domain.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,26 @@ namespace CryptoApp.Application.Services
 
         public async Task<IList<Currency>> GetTop10Currencies() 
         {
+            var result = new List<Currency>();
+
             var response = await _httpClient.GetAsync("https://api.coincap.io/v2/assets");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
+                var records = JObject.Parse(content)["data"];
+
+                foreach(var elem in records)
+                {
+                    var record = new Currency();
+                    record.CurrencyName = elem["name"].ToString();
+                    record.PopularityRating = Convert.ToInt32(elem["rank"].ToString());
+                    result.Add(record);
+                }
             }
 
+            result = result.OrderBy(x => x.PopularityRating).Take(10).ToList();
 
-            return null;
+            return result;
         }
         public Task<IList<Currency>> GetTopNCurrenciesOnMarket(int N, string market)
         {

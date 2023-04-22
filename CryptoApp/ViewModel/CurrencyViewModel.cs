@@ -26,7 +26,7 @@ namespace CryptoApp.ViewModel
         public double Price => _currency.Price;
         public double Volume => _currency.Volume;
         public double PriceChange => _currency.PriceChange;
-        public int PopularityRating { get; set; }
+        public int PopularityRating => _currency.PopularityRating;
 
         public IEnumerable<string> AvailableMarketsNames => _currency.AvailableMarketsNames;
 

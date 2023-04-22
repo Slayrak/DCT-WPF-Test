@@ -14,7 +14,7 @@ namespace CryptoApp.ViewModel
     public class TopCurrenciesViewModel : ViewModelBase
     {
         private readonly ICurrencyService _currencyService;
-        public IList<CurrencyViewModel> CurrencyViewModels { get; set; }
+        public IList<CurrencyListInstanceViewModel> CurrencyViewModels { get; set; } = new List<CurrencyListInstanceViewModel>();
 
         private int _topN = 10;
         public int TopN 
@@ -47,17 +47,23 @@ namespace CryptoApp.ViewModel
         public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
         {
             _currencyService = currencyService;
-            _ = GetTop10Currencies();
+            GetTop10Currencies();
             SearchCommand = new SearchCommand(this);
             OpenCurrencyInfo = new NavigateCommand(navigationStore, currenciesViewModel);
             OpenCurrencyConverter = new NavigateCommand(navigationStore, convertViewModel);
         }
 
-        private async Task<CurrencyViewModel> GetTop10Currencies()
+        private async void GetTop10Currencies()
         {
-            await _currencyService.GetTop10Currencies();
+            CurrencyViewModels.Clear();
 
-            return null;
+            var currencies = await _currencyService.GetTop10Currencies();
+
+            currencies.ToList().ForEach(x =>
+            {
+                var record = new CurrencyListInstanceViewModel(x);
+                CurrencyViewModels.Add(record);
+            });
         }
     }
 }

@@ -13,6 +13,7 @@ namespace CryptoApp.Domain.Models
         public double Price { get; set; }
         public double Volume { get; set; }
         public double PriceChange { get; set; }
+        public int PopularityRating { get; set; }
 
         public IList<string> AvailableMarketsNames { get; set; } = new List<string>();
 
