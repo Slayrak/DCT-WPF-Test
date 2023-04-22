@@ -7,6 +7,161 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Main Page"
+            Width="70px"
+            Margin="20 10 10 10"
+            Command="{Binding OpenTop10}"
+            />
+
+        <TextBlock 
+            Grid.Row="1"
+            Grid.Column="0"
+            FontSize="24"
+            Text="{Binding CurrencyName}"
+            Margin="20 0 10 10"/>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock 
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Price"
+            Width="auto"
+            Margin="10 0 10 10"/>
+
+            <TextBlock 
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="{Binding Price}"
+            Width="auto"
+            MaxWidth="100px"    
+            Margin="10 10 10 10"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock 
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Volume"
+            Width="auto"
+            Margin="10 0 10 10"/>
+
+            <TextBlock 
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="{Binding Volume}"
+            Width="auto"
+            MaxWidth="100px"    
+            Margin="10 10 10 10"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="3">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock 
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Price Change 24 hrs"
+            Width="auto"
+            Margin="10 0 10 10"/>
+
+            <TextBlock 
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="{Binding PriceChange}"
+            Width="auto"
+            MaxWidth="100px"    
+            Margin="10 10 10 10"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            Grid.ColumnSpan="4"
+            >
             
+
+        </Grid>
+
+        <Grid
+            Grid.Row="3"
+            Grid.ColumnSpan="4"
+            >
+            <DataGrid
+            x:Name="MarketsGrid"
+            ColumnWidth="*"
+            HorizontalAlignment="Left"
+            Margin="10 0 10 10"
+            ScrollViewer.CanContentScroll="True" 
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            MaxHeight="300px"
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding AvailableMarketsNames}">
+
+                <DataGrid.Columns>
+                    <DataGridHyperlinkColumn Header="Name" Width="125" Binding="{Binding MarketName}"/>
+                    <DataGridTextColumn Header="Price" Width="125" Binding="{Binding Price}"/>
+                </DataGrid.Columns>
+
+
+
+            </DataGrid>
+        </Grid>
+        
     </Grid>
 </UserControl>

@@ -28,7 +28,7 @@ namespace CryptoApp.ViewModel
         public double PriceChange => _currency.PriceChange;
         public int PopularityRating => _currency.PopularityRating;
 
-        public IEnumerable<string> AvailableMarketsNames => _currency.AvailableMarketsNames;
+        public IList<MarketCurrencyViewModel> AvailableMarketsNames;
 
         public ICommand OpenTop10 { get; }
     }
