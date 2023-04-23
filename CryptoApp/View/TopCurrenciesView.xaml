@@ -72,8 +72,29 @@
             ItemsSource="{Binding CurrencyViewModels}">
 
             <DataGrid.Columns>
-                <DataGridHyperlinkColumn 
-                    Header="Name" Width="125" Binding="{Binding CurrencyName}"/>
+                <DataGridTemplateColumn Header="Name" Width="125">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding RelativeSource={
+                            RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}},
+                          Path=DataContext.CurrentViewModel.OpenCurrencyInfo}"
+                                CommandParameter="{Binding CurrencyName}">
+                                    <TextBlock Text="{Binding CurrencyName}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridHyperlinkColumn 
+                    Header="Name" Width="125" Binding="{Binding CurrencyName}">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style>
+                            <EventSetter Event="Hyperlink.Click" Handler="{Binding DG_Hyperlink_Click}"/>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>-->
                 <DataGridTextColumn Header="Popularity №" Width="125" Binding="{Binding PopularityRating}"/>
             </DataGrid.Columns>
             

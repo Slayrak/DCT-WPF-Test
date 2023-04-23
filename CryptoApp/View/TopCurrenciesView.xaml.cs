@@ -21,7 +21,6 @@ namespace CryptoApp.View
     /// </summary>
     public partial class TopCurrenciesView : UserControl
     {
-        private readonly ICurrencyService _currencyService;
         public TopCurrenciesView()
         {
             InitializeComponent();

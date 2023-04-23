@@ -4,9 +4,12 @@ using CryptoApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CryptoApp.ViewModel
@@ -67,6 +70,11 @@ namespace CryptoApp.ViewModel
                 var record = new CurrencyListInstanceViewModel(x);
                 CurrencyViewModels.Add(record);
             });
+        }
+        private void DG_Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Hyperlink link = (Hyperlink)e.OriginalSource;
+            Process.Start(link.NavigateUri.AbsoluteUri);
         }
     }
 }
