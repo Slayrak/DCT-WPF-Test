@@ -1,4 +1,5 @@
-﻿using CryptoApp.ViewModel;
+﻿using CryptoApp.Domain.Interfaces;
+using CryptoApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,11 +12,13 @@ namespace CryptoApp.Commands
     public class SearchCommand : CommandBase
     {
         private readonly TopCurrenciesViewModel _topCurrenciesViewModel;
-        public SearchCommand(TopCurrenciesViewModel topCurrenciesViewModel)
+        private readonly ICurrencyService _currencyService;
+        public SearchCommand(TopCurrenciesViewModel topCurrenciesViewModel, ICurrencyService currencyService)
         {
             _topCurrenciesViewModel = topCurrenciesViewModel;
-
             _topCurrenciesViewModel.PropertyChanged += OnViewPropertyChanged;
+
+            _currencyService = currencyService;
         }
 
         private void OnViewPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -26,14 +29,34 @@ namespace CryptoApp.Commands
             }
         }
 
-        public override void Execute(object? parameter)
+        public async override void Execute(object? parameter)
         {
-            throw new NotImplementedException();
+            if(!string.IsNullOrEmpty(_topCurrenciesViewModel.CurrencyName))
+            {
+                var result = await _currencyService.GetCurrencyByName(_topCurrenciesViewModel.CurrencyName);
+                _topCurrenciesViewModel.CurrencyViewModels.Clear();
+
+                var record = new CurrencyListInstanceViewModel(result);
+                _topCurrenciesViewModel.CurrencyViewModels.Add(record);
+
+            }
+            else
+            {
+                _topCurrenciesViewModel.CurrencyViewModels.Clear();
+
+                var currencies = await _currencyService.GetTop10Currencies();
+
+                currencies.ToList().ForEach(x =>
+                {
+                    var record = new CurrencyListInstanceViewModel(x);
+                    _topCurrenciesViewModel.CurrencyViewModels.Add(record);
+                });
+            }
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return !string.IsNullOrEmpty(_topCurrenciesViewModel.CurrencyName) && base.CanExecute(parameter);
+            return /*!string.IsNullOrEmpty(_topCurrenciesViewModel.CurrencyName) && */base.CanExecute(parameter);
         }
     }
 }

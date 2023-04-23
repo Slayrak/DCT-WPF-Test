@@ -1,6 +1,7 @@
 ﻿using CryptoApp.Commands;
 using CryptoApp.Domain.Models;
 using CryptoApp.Stores;
+using LiveCharts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace CryptoApp.ViewModel
 {
     public class CurrencyViewModel : ViewModelBase
     {
+        public SeriesCollection SeriesCollection { get; set; }
+
         private readonly Currency _currency;
 
         public CurrencyViewModel(Currency currency, NavigationStore navigationStore, Func<TopCurrenciesViewModel> topCurrenciesViewModel)
@@ -19,6 +22,7 @@ namespace CryptoApp.ViewModel
             _currency = currency;
 
             OpenTop10 = new NavigateCommand(navigationStore, topCurrenciesViewModel);
+
         }
 
         public string CurrencyName => _currency.CurrencyName;

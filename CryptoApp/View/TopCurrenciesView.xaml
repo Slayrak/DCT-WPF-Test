@@ -72,7 +72,8 @@
             ItemsSource="{Binding CurrencyViewModels}">
 
             <DataGrid.Columns>
-                <DataGridHyperlinkColumn Header="Name" Width="125" Binding="{Binding CurrencyName}"/>
+                <DataGridHyperlinkColumn 
+                    Header="Name" Width="125" Binding="{Binding CurrencyName}"/>
                 <DataGridTextColumn Header="Popularity №" Width="125" Binding="{Binding PopularityRating}"/>
             </DataGrid.Columns>
             
@@ -94,13 +95,15 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <RadioButton
+            <!--<RadioButton
                 GroupName="Top"
                 Content="Top 10"
                 IsChecked="True"
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="10 10 10 10"
+                Command="{Binding GetTopCurrenciesCommand}"
+                CommandParameter="GetTop10"
                 x:Name="Top10"/>
 
             <RadioButton
@@ -110,6 +113,8 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="10 10 0 10"
+                Command="{Binding GetTopCurrenciesCommand}"
+                CommandParameter="GetTopNByMarket"
                 x:Name="TopN"/>
             <TextBox 
                 Grid.Row="1"
@@ -117,7 +122,7 @@
                 Name="TopNumber"
                 Margin="0 10 10 10"
                 Width="30px"
-                Text="{Binding TopN, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding TopN, UpdateSourceTrigger=PropertyChanged}"/>-->
 
             <Button
                 Grid.Column="0"

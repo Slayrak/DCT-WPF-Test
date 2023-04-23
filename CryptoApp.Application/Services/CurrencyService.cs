@@ -46,9 +46,30 @@ namespace CryptoApp.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Currency> GetCurrencyByName(string currencyName)
+        public async Task<Currency> GetCurrencyByName(string currencyName)
         {
-            throw new NotImplementedException();
+            var result = new Currency();
+
+            var response = await _httpClient.GetAsync("https://api.coincap.io/v2/assets");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var records = JObject.Parse(content)["data"];
+
+                foreach (var elem in records)
+                {
+                    if(currencyName == elem["name"].ToString())
+                    {
+                        result.CurrencyName = elem["name"].ToString();
+                        result.PopularityRating = Convert.ToInt32(elem["rank"].ToString());
+                        break;
+                    }
+                }
+            }
+
+            return result;
+
         }
     }
 }
