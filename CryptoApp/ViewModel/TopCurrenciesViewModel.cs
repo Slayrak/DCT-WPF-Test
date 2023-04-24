@@ -48,7 +48,7 @@ namespace CryptoApp.ViewModel
         public ICommand OpenCurrencyConverter { get; }
         public ICommand GetTopCurrenciesCommand { get; }
 
-        public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
+        public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<string, CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
         {
             _currencyService = currencyService;
             GetTop10Currencies();
@@ -70,11 +70,6 @@ namespace CryptoApp.ViewModel
                 var record = new CurrencyListInstanceViewModel(x);
                 CurrencyViewModels.Add(record);
             });
-        }
-        private void DG_Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            Hyperlink link = (Hyperlink)e.OriginalSource;
-            Process.Start(link.NavigateUri.AbsoluteUri);
         }
     }
 }

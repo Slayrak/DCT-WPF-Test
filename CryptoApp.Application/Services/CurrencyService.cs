@@ -63,6 +63,11 @@ namespace CryptoApp.Application.Services
                     {
                         result.CurrencyName = elem["name"].ToString();
                         result.PopularityRating = Convert.ToInt32(elem["rank"].ToString());
+                        result.CurrencyCode = elem["id"].ToString();
+                        result.Price = elem["priceUsd"].ToString();
+                        result.Volume = elem["volumeUsd24Hr"].ToString();
+                        result.PriceChangeInPercents = elem["changePercent24Hr"].ToString();
+
                         break;
                     }
                 }

@@ -22,7 +22,7 @@ namespace CryptoApp
     {
         private ServiceProvider serviceProvider;
         private readonly NavigationStore _navigationStore;
-        private Currency _currency;
+        private string _currency;
         public App()
         {
             ServiceCollection services = new ServiceCollection();
@@ -31,7 +31,7 @@ namespace CryptoApp
 
             _navigationStore = new NavigationStore();
 
-            _currency= new Currency();
+            _currency= "";
         }
 
         private void ConfigureServices(ServiceCollection services)
@@ -58,9 +58,9 @@ namespace CryptoApp
         {
             return new TopCurrenciesViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), _navigationStore, CreateCurrencyViewModel, CreateConvertCurrenciesViewModel);
         }
-        private CurrencyViewModel CreateCurrencyViewModel()
+        private CurrencyViewModel CreateCurrencyViewModel(string currency = "")
         {
-            return new CurrencyViewModel(_currency, _navigationStore, CreateTopCurrenciesViewModel);
+            return new CurrencyViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), currency, _navigationStore, CreateTopCurrenciesViewModel);
         }
 
         private ConvertCurrenciesViewModel CreateConvertCurrenciesViewModel()

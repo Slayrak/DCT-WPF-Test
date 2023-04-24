@@ -13,6 +13,7 @@ namespace CryptoApp.Commands
     {
         private readonly NavigationStore _navigationStore;
         private readonly Func<ViewModelBase> _createViewModel;
+        private readonly Func<string, ViewModelBase> _createCurrencyViewModel;
 
         public NavigateCommand(NavigationStore navigationStore, Func<ViewModelBase> createViewModel)
         {
@@ -20,9 +21,25 @@ namespace CryptoApp.Commands
             _createViewModel = createViewModel;
         }
 
+        public NavigateCommand(NavigationStore navigationStore, Func<string,ViewModelBase> createViewModel)
+        {
+            _navigationStore = navigationStore;
+            _createCurrencyViewModel = createViewModel;
+        }
+
         public override void Execute(object? parameter)
         {
-            _navigationStore.CurrentViewModel = _createViewModel();
+
+            if(_createCurrencyViewModel != null)
+            {
+
+                _navigationStore.CurrentViewModel = _createCurrencyViewModel(parameter.ToString());
+                /*_navigationStore.CurrentViewModel = new CurrencyViewModel(_navigationStore);*/ //попробуй завтра це змінити якомога швидше!
+            }
+            else
+            {
+                _navigationStore.CurrentViewModel = _createViewModel();
+            }
         }
     }
 }

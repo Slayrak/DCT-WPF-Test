@@ -10,9 +10,9 @@ namespace CryptoApp.Domain.Models
     {
         public string CurrencyName { get; set; } = "";
         public string CurrencyCode { get; set; } = "";
-        public double Price { get; set; }
-        public double Volume { get; set; }
-        public double PriceChange { get; set; }
+        public string Price { get; set; }
+        public string Volume { get; set; }
+        public string PriceChangeInPercents { get; set; }
         public int PopularityRating { get; set; }
 
         public IList<string> AvailableMarketsNames { get; set; } = new List<string>();
