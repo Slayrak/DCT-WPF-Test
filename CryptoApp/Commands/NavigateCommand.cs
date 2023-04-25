@@ -40,7 +40,6 @@ namespace CryptoApp.Commands
                 var result = await _currencyService.GetCurrencyByName(parameter.ToString());
 
                 _navigationStore.CurrentViewModel = _createCurrencyViewModel(result);
-                /*_navigationStore.CurrentViewModel = new CurrencyViewModel(_navigationStore);*/ //попробуй завтра це змінити якомога швидше!
             }
             else
             {

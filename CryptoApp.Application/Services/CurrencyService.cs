@@ -46,6 +46,27 @@ namespace CryptoApp.Application.Services
             return result;
         }
 
+        public async Task<IList<string>> GetAllCurrenciesName()
+        {
+            var result = new List<string>();
+
+            var response = await _httpClient.GetAsync("https://api.coincap.io/v2/assets");
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var records = JObject.Parse(content)["data"];
+
+                foreach (var elem in records)
+                {
+                    var record = "";
+                    record = elem["id"].ToString();
+                    result.Add(record);
+                }
+            }
+
+            return result;
+        }
+
         public async Task<IList<Market>> GetMarkets(string currencyCode)
         {
             var result = new List<Market>();
@@ -143,6 +164,39 @@ namespace CryptoApp.Application.Services
             }
 
             return myData;
+        }
+
+        public async Task<IList<ConvertCurrencies>> ConvertCurrencies(string baseName, string quoteName)
+        {
+            var result = new List<ConvertCurrencies>();
+
+            var response = await _httpClient.GetAsync($"https://api.coincap.io/v2/markets?baseId={baseName}&quoteId={quoteName}");
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var records = JObject.Parse(content)["data"];
+
+                foreach (var elem in records)
+                {
+                    double price;
+                    Double.TryParse(elem["priceUsd"].ToString(), CultureInfo.InvariantCulture, out price);
+                    double quoteprice;
+                    Double.TryParse(elem["priceQuote"].ToString(), CultureInfo.InvariantCulture, out quoteprice);
+
+
+                    var record = new ConvertCurrencies();
+                    record.MarketId = elem["exchangeId"].ToString();
+                    record.BaseId = elem["baseId"].ToString();
+                    record.QuoteId = elem["quoteId"].ToString();
+                    record.PriceQuote = quoteprice;
+                    record.PriceUSD = price;
+                    result.Add(record);
+                }
+            }
+
+            result = result.OrderBy(x => x.PriceQuote).ToList();
+
+            return result;
         }
     }
 }

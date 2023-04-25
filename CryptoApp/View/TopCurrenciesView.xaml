@@ -87,14 +87,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!--<DataGridHyperlinkColumn 
-                    Header="Name" Width="125" Binding="{Binding CurrencyName}">
-                    <DataGridHyperlinkColumn.ElementStyle>
-                        <Style>
-                            <EventSetter Event="Hyperlink.Click" Handler="{Binding DG_Hyperlink_Click}"/>
-                        </Style>
-                    </DataGridHyperlinkColumn.ElementStyle>
-                </DataGridHyperlinkColumn>-->
                 <DataGridTextColumn Header="Popularity №" Width="125" Binding="{Binding PopularityRating}"/>
             </DataGrid.Columns>
             
@@ -116,40 +108,12 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <!--<RadioButton
-                GroupName="Top"
-                Content="Top 10"
-                IsChecked="True"
-                Grid.Row="0"
-                Grid.Column="0"
-                Margin="10 10 10 10"
-                Command="{Binding GetTopCurrenciesCommand}"
-                CommandParameter="GetTop10"
-                x:Name="Top10"/>
-
-            <RadioButton
-                GroupName="Top"
-                Content="Top N"
-                IsChecked="False"
-                Grid.Row="1"
-                Grid.Column="0"
-                Margin="10 10 0 10"
-                Command="{Binding GetTopCurrenciesCommand}"
-                CommandParameter="GetTopNByMarket"
-                x:Name="TopN"/>
-            <TextBox 
-                Grid.Row="1"
-                Grid.Column="1"
-                Name="TopNumber"
-                Margin="0 10 10 10"
-                Width="30px"
-                Text="{Binding TopN, UpdateSourceTrigger=PropertyChanged}"/>-->
-
             <Button
                 Grid.Column="0"
                 Grid.Row="2"
                 Content="Convert"
-                Margin="10 0 10 10"/>
+                Margin="10 0 10 10"
+                Command="{Binding OpenCurrencyConverter}"/>
 
         </Grid>
 

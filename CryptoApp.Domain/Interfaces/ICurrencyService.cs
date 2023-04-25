@@ -12,7 +12,10 @@ namespace CryptoApp.Domain.Interfaces
     {
         Task<IList<Currency>> GetTop10Currencies();
         Task<IList<Market>> GetMarkets(string currencyCode);
+        Task<IList<string>> GetAllCurrenciesName();
         Task<List<PointStorage>> GetCandles(string coinName);
-        Task<Currency> GetCurrencyByName(string currencyName); 
+        Task<Currency> GetCurrencyByName(string currencyName);
+        
+        Task<IList<ConvertCurrencies>> ConvertCurrencies(string baseName, string quoteName);
     }
 }

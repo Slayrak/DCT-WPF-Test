@@ -18,7 +18,7 @@ namespace CryptoApp.ViewModel
     public class TopCurrenciesViewModel : ViewModelBase
     {
         private readonly ICurrencyService _currencyService;
-        public ObservableCollection<CurrencyListInstanceViewModel> CurrencyViewModels { get; set; } = new ObservableCollection<CurrencyListInstanceViewModel>();
+        public ObservableCollection<CurrencyListElementInstanceViewModel> CurrencyViewModels { get; set; } = new ObservableCollection<CurrencyListElementInstanceViewModel>();
 
         private int _topN = 10;
         public int TopN 
@@ -68,7 +68,7 @@ namespace CryptoApp.ViewModel
 
             currencies.ToList().ForEach(x =>
             {
-                var record = new CurrencyListInstanceViewModel(x);
+                var record = new CurrencyListElementInstanceViewModel(x);
                 CurrencyViewModels.Add(record);
             });
         }

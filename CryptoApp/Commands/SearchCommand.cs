@@ -36,7 +36,7 @@ namespace CryptoApp.Commands
                 var result = await _currencyService.GetCurrencyByName(_topCurrenciesViewModel.CurrencyName);
                 _topCurrenciesViewModel.CurrencyViewModels.Clear();
 
-                var record = new CurrencyListInstanceViewModel(result);
+                var record = new CurrencyListElementInstanceViewModel(result);
                 _topCurrenciesViewModel.CurrencyViewModels.Add(record);
 
             }
@@ -48,7 +48,7 @@ namespace CryptoApp.Commands
 
                 currencies.ToList().ForEach(x =>
                 {
-                    var record = new CurrencyListInstanceViewModel(x);
+                    var record = new CurrencyListElementInstanceViewModel(x);
                     _topCurrenciesViewModel.CurrencyViewModels.Add(record);
                 });
             }
@@ -56,7 +56,7 @@ namespace CryptoApp.Commands
 
         public override bool CanExecute(object? parameter)
         {
-            return /*!string.IsNullOrEmpty(_topCurrenciesViewModel.CurrencyName) && */base.CanExecute(parameter);
+            return base.CanExecute(parameter);
         }
     }
 }

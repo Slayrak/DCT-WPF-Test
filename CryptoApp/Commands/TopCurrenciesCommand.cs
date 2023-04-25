@@ -32,7 +32,7 @@ namespace CryptoApp.Commands
 
                 currencies.ToList().ForEach(x =>
                 {
-                    var record = new CurrencyListInstanceViewModel(x);
+                    var record = new CurrencyListElementInstanceViewModel(x);
                     _topCurrenciesViewModel.CurrencyViewModels.Add(record);
                 });
             }

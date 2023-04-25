@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace CryptoApp.ViewModel
 {
-    public class CurrencyListInstanceViewModel
+    public class CurrencyListElementInstanceViewModel
     {
         private readonly Currency _currency;
-        public CurrencyListInstanceViewModel(Currency currency)
+        public CurrencyListElementInstanceViewModel(Currency currency)
         {
             _currency = currency;
         }

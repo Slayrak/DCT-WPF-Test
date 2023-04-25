@@ -65,7 +65,7 @@ namespace CryptoApp
 
         private ConvertCurrenciesViewModel CreateConvertCurrenciesViewModel()
         {
-            return new ConvertCurrenciesViewModel();
+            return new ConvertCurrenciesViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), _navigationStore, CreateTopCurrenciesViewModel);
         }
     }
 }
