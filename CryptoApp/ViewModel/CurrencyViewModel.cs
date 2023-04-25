@@ -26,6 +26,7 @@ namespace CryptoApp.ViewModel
 
         public ObservableCollection<OhlcPoint> Points { get; set; } = new ObservableCollection<OhlcPoint>();
         public ObservableCollection<DateTime> Dates { get; set; } = new ObservableCollection<DateTime>();
+        public ObservableCollection<MarketCurrencyViewModel> Markets { get; set; } = new ObservableCollection<MarketCurrencyViewModel>();
 
         public CurrencyViewModel(ICurrencyService currencyService, Currency currency, NavigationStore navigationStore, Func<TopCurrenciesViewModel> topCurrenciesViewModel)
         {
@@ -41,6 +42,7 @@ namespace CryptoApp.ViewModel
             OpenTop10 = new NavigateCommand(navigationStore, topCurrenciesViewModel);
             GetCurrencyInfo();
             GetCandles();
+            GetMarkets();
 
         }
 
@@ -180,6 +182,19 @@ namespace CryptoApp.ViewModel
             {
                 Labels[i + 1] = Dates[i].ToString();
             }
+        }
+
+        private async void GetMarkets()
+        {
+            Markets.Clear();
+
+            var markets = await _currencyService.GetMarkets(CurrencyCode);
+
+            markets.ToList().ForEach(x =>
+            {
+                var record = new MarketCurrencyViewModel(x);
+                Markets.Add(record);
+            });
         }
     }
 }

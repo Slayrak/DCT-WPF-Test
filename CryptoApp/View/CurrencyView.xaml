@@ -167,7 +167,7 @@
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
             MaxHeight="300px"
             AutoGenerateColumns="False"
-            ItemsSource="{Binding AvailableMarketsNames}">
+            ItemsSource="{Binding Markets}">
 
                 <DataGrid.Columns>
                     <DataGridHyperlinkColumn Header="Name" Width="125" Binding="{Binding MarketName}"/>

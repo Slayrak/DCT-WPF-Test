@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CryptoApp.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,12 @@ namespace CryptoApp.ViewModel
 {
     public class MarketCurrencyViewModel
     {
-        public double Price { get; set; }
-        public string MarketName { get; set; }
+        private readonly Market _market;
+        public MarketCurrencyViewModel(Market market)
+        {
+            _market = market;
+        }
+        public double Price => _market.Price;
+        public string MarketName => _market.MarketName;
     }
 }

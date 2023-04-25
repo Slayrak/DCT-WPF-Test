@@ -45,9 +45,32 @@ namespace CryptoApp.Application.Services
 
             return result;
         }
-        public Task<IList<Currency>> GetTopNCurrenciesOnMarket(int N, string market)
+
+        public async Task<IList<Market>> GetMarkets(string currencyCode)
         {
-            throw new NotImplementedException();
+            var result = new List<Market>();
+
+            var response = await _httpClient.GetAsync($"https://api.coincap.io/v2/assets/{currencyCode}/markets");
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var records = JObject.Parse(content)["data"];
+
+                foreach (var elem in records)
+                {
+                    double price;
+
+                    var record = new Market();
+                    record.MarketName = elem["exchangeId"].ToString();
+                    Double.TryParse(elem["priceUsd"].ToString(), CultureInfo.InvariantCulture, out price);
+                    record.Price = price;
+                    result.Add(record);
+                }
+            }
+
+            result = result.OrderBy(x => x.Price).ToList();
+
+            return result;
         }
 
         public async Task<Currency> GetCurrencyByName(string currencyName)

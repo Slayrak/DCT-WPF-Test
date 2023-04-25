@@ -11,8 +11,7 @@ namespace CryptoApp.Domain.Interfaces
     public interface ICurrencyService
     {
         Task<IList<Currency>> GetTop10Currencies();
-        Task<IList<Currency>> GetTopNCurrenciesOnMarket(int N, string market);
-
+        Task<IList<Market>> GetMarkets(string currencyCode);
         Task<List<PointStorage>> GetCandles(string coinName);
         Task<Currency> GetCurrencyByName(string currencyName); 
     }
