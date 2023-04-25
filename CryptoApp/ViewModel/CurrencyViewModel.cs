@@ -8,6 +8,7 @@ using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -18,48 +19,55 @@ namespace CryptoApp.ViewModel
 {
     public class CurrencyViewModel : ViewModelBase
     {
-        public SeriesCollection SeriesCollection { get; set; }
         private readonly ICurrencyService _currencyService;
 
-        private readonly string _currencyName;
+        private readonly DelegateCommand _loadCommand;
+        private readonly Currency _currency;
 
-        public CurrencyViewModel(ICurrencyService currencyService, string currencyName, NavigationStore navigationStore, Func<TopCurrenciesViewModel> topCurrenciesViewModel)
+        public ObservableCollection<OhlcPoint> Points { get; set; } = new ObservableCollection<OhlcPoint>();
+        public ObservableCollection<DateTime> Dates { get; set; } = new ObservableCollection<DateTime>();
+
+        public CurrencyViewModel(ICurrencyService currencyService, Currency currency, NavigationStore navigationStore, Func<TopCurrenciesViewModel> topCurrenciesViewModel)
         {
-            _currencyName = currencyName;
-            _currencyService= currencyService;
+            _currency = currency;
+
+            CurrencyName = _currency.CurrencyName;
+            CurrencyCode = _currency.CurrencyCode;
+            Price = _currency.Price;
+            Volume = _currency.Volume;
+            PopularityRating = _currency.PopularityRating;
+
+            _currencyService = currencyService;
             OpenTop10 = new NavigateCommand(navigationStore, topCurrenciesViewModel);
             GetCurrencyInfo();
+            GetCandles();
 
-            SeriesCollection = new SeriesCollection();
-            var myData = new List<OhlcPoint>
-            {
-            new OhlcPoint(100, 110, 90, 105),
-            new OhlcPoint(105, 120, 100, 110),
-            new OhlcPoint(110, 115, 100, 110),
-            new OhlcPoint(110, 125, 105, 120),
-            new OhlcPoint(120, 125, 110, 115),
-            new OhlcPoint(115, 120, 105, 110),
-            new OhlcPoint(110, 115, 105, 110),
-            new OhlcPoint(110, 120, 100, 115),
-            new OhlcPoint(115, 125, 110, 115),
-            new OhlcPoint(120, 125, 115, 120),
-            new OhlcPoint(120, 130, 115, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125),
-            new OhlcPoint(125, 130, 120, 125)
-            };
-            SeriesCollection.Add(new CandleSeries
-            {
-                Values = myData.AsChartValues(),
-                Title = "My Data"
-            });
+        }
 
+        private string[] _labels;
+        public string[] Labels
+        {
+            get { return _labels; }
+            set
+            {
+                _labels = value;
+                OnPropertyChanged(nameof(Labels));
+            }
+        }
+
+
+        private SeriesCollection seriesCollection;
+        public SeriesCollection SeriesCollection
+        {
+            get
+            {
+                return seriesCollection;
+            }
+            set
+            {
+                seriesCollection = value;
+                OnPropertyChanged(nameof(this.SeriesCollection));
+            }
         }
 
         private string currencyName;
@@ -129,7 +137,7 @@ namespace CryptoApp.ViewModel
 
         private async void GetCurrencyInfo()
         {
-            var _currency = await _currencyService.GetCurrencyByName(_currencyName);
+            var _currency = await _currencyService.GetCurrencyByName(this._currency.CurrencyName);
 
             CurrencyName = _currency.CurrencyName;
             CurrencyCode = _currency.CurrencyCode;
@@ -143,6 +151,35 @@ namespace CryptoApp.ViewModel
             Double.TryParse(Price, CultureInfo.InvariantCulture, out number);
 
             var check = number;
+        }
+
+        private async void GetCandles()
+        {
+            Points.Clear();
+            
+            var result =  await _currencyService.GetCandles(currencyCode);
+            result.ToList().ForEach(x =>
+            {
+                Points.Add(new OhlcPoint(x.Open, x.High, x.Low, x.Close));
+                Dates.Add(x.Date);
+            });
+
+
+            SeriesCollection = new SeriesCollection
+            {
+                new CandleSeries
+                {
+                    Values = Points.AsChartValues(),
+                    Title = "Data for 1 day",
+                }
+            };
+
+            Labels = new string[Dates.Count + 1];
+            Labels[0] = DateTime.Now.ToString("dd MMM");
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                Labels[i + 1] = Dates[i].ToString();
+            }
         }
     }
 }

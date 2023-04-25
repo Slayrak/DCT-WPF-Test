@@ -58,7 +58,7 @@ namespace CryptoApp
         {
             return new TopCurrenciesViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), _navigationStore, CreateCurrencyViewModel, CreateConvertCurrenciesViewModel);
         }
-        private CurrencyViewModel CreateCurrencyViewModel(string currency = "")
+        private CurrencyViewModel CreateCurrencyViewModel(Currency currency = null)
         {
             return new CurrencyViewModel(serviceProvider.GetRequiredService<ICurrencyService>(), currency, _navigationStore, CreateTopCurrenciesViewModel);
         }

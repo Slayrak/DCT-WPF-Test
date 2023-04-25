@@ -1,4 +1,6 @@
-﻿using CryptoApp.Stores;
+﻿using CryptoApp.Domain.Interfaces;
+using CryptoApp.Domain.Models;
+using CryptoApp.Stores;
 using CryptoApp.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,8 @@ namespace CryptoApp.Commands
     {
         private readonly NavigationStore _navigationStore;
         private readonly Func<ViewModelBase> _createViewModel;
-        private readonly Func<string, ViewModelBase> _createCurrencyViewModel;
+        private readonly Func<Currency, ViewModelBase> _createCurrencyViewModel;
+        private readonly ICurrencyService _currencyService;
 
         public NavigateCommand(NavigationStore navigationStore, Func<ViewModelBase> createViewModel)
         {
@@ -21,19 +24,22 @@ namespace CryptoApp.Commands
             _createViewModel = createViewModel;
         }
 
-        public NavigateCommand(NavigationStore navigationStore, Func<string,ViewModelBase> createViewModel)
+        public NavigateCommand(NavigationStore navigationStore, Func<Currency,ViewModelBase> createViewModel, ICurrencyService currencyService)
         {
             _navigationStore = navigationStore;
             _createCurrencyViewModel = createViewModel;
+            _currencyService = currencyService;
         }
 
-        public override void Execute(object? parameter)
+        public override async void Execute(object? parameter)
         {
 
             if(_createCurrencyViewModel != null)
             {
 
-                _navigationStore.CurrentViewModel = _createCurrencyViewModel(parameter.ToString());
+                var result = await _currencyService.GetCurrencyByName(parameter.ToString());
+
+                _navigationStore.CurrentViewModel = _createCurrencyViewModel(result);
                 /*_navigationStore.CurrentViewModel = new CurrencyViewModel(_navigationStore);*/ //попробуй завтра це змінити якомога швидше!
             }
             else

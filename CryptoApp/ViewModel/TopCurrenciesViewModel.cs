@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows;
 using System.Windows.Input;
+using CryptoApp.Domain.Models;
 
 namespace CryptoApp.ViewModel
 {
@@ -48,13 +49,13 @@ namespace CryptoApp.ViewModel
         public ICommand OpenCurrencyConverter { get; }
         public ICommand GetTopCurrenciesCommand { get; }
 
-        public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<string, CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
+        public TopCurrenciesViewModel(ICurrencyService currencyService, NavigationStore navigationStore, Func<Currency, CurrencyViewModel> currenciesViewModel, Func<ConvertCurrenciesViewModel> convertViewModel)
         {
             _currencyService = currencyService;
             GetTop10Currencies();
 
             SearchCommand = new SearchCommand(this, _currencyService);
-            OpenCurrencyInfo = new NavigateCommand(navigationStore, currenciesViewModel);
+            OpenCurrencyInfo = new NavigateCommand(navigationStore, currenciesViewModel, _currencyService);
             OpenCurrencyConverter = new NavigateCommand(navigationStore, convertViewModel);
             GetTopCurrenciesCommand = new TopCurrenciesCommand(this, _currencyService);
         }

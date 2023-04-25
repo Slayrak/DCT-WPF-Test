@@ -1,10 +1,14 @@
 ﻿using CryptoApp.Domain.Interfaces;
 using CryptoApp.Domain.Models;
+using LiveCharts.Defaults;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace CryptoApp.Application.Services
@@ -75,6 +79,47 @@ namespace CryptoApp.Application.Services
 
             return result;
 
+        }
+
+        public async Task<List<PointStorage>> GetCandles(string coinName)
+        {
+            var myData = new List<PointStorage>();
+            var response = await _httpClient.GetAsync($"https://api.coingecko.com/api/v3/coins/{coinName}/ohlc?vs_currency=usd&days=1");
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var records = JArray.Parse(content);
+
+                foreach(var elem in records)
+                {
+                    double open;
+                    double high;
+                    double low;
+                    double close;
+
+                    long time;
+                    long.TryParse(elem[0].ToString(), out time);
+                    time /= 1000;
+                    DateTime result = DateTimeOffset.FromUnixTimeMilliseconds(time).DateTime;
+
+
+                    Double.TryParse(elem[1].ToString(), out open);
+                    Double.TryParse(elem[2].ToString(), out high);
+                    Double.TryParse(elem[3].ToString(), out low);
+                    Double.TryParse(elem[4].ToString(), out close);
+
+                    myData.Add(new PointStorage
+                    {
+                        Date = result,
+                        Open = open,
+                        High = high,
+                        Low = low,
+                        Close = close,
+                    });
+                }
+            }
+
+            return myData;
         }
     }
 }
